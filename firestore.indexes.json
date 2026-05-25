@@ -1,0 +1,39 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "pending_invoices",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "cashierId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "invoices",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "login_log",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "loginAt",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
