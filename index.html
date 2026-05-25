@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - تسجيل الدخول</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-box {
+            background: rgba(255,255,255,0.95);
+            padding: 45px 40px;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 440px;
+            animation: fadeIn 0.7s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .brand {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .brand h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        .brand p { color: #888; font-size: 15px; }
+        .input-wrap {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .input-wrap label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8e8e8;
+            border-radius: 14px;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        .input-wrap input:focus {
+            outline: none;
+            border-color: #e94560;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(233,69,96,0.1);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+        }
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(233,69,96,0.35);
+        }
+        .login-btn:active { transform: translateY(0); }
+        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .alert {
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        .alert.show { display: block; }
+        .alert-err { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+        .alert-warn { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+        .alert-ok { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hint {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #999;
+        }
+        .version {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="brand">
+            <h1>Welcome</h1>
+            <p>تسجيل الدخول للنظام</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <form id="loginForm">
+            <div class="input-wrap">
+                <label>📧 البريد الإلكتروني</label>
+                <input type="email" id="email" placeholder="example@email.com" required>
+            </div>
+            <div class="input-wrap">
+                <label>🔒 كلمة المرور</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span class="loader" id="spinner"></span>
+                تسجيل الدخول
+            </button>
+        </form>
+
+        <p class="hint">ℹ️ إنشاء الحسابات متاح للمدير فقط من لوحة التحكم</p>
+        <p class="version">Welcome</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDf_FZ5dDhJCYag9EpEblgylTrxber7oks",
+            authDomain: "cashier-52332.firebaseapp.com",
+            projectId: "cashier-52332",
+            storageBucket: "cashier-52332.firebasestorage.app",
+            messagingSenderId: "708122460779",
+            appId: "1:708122460779:web:5c0fb2f36488aa6ae3272e",
+            measurementId: "G-8BLM2L0LN5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // If already logged in, redirect to exe
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    // Check expiration (skip for admin)
+                    if (data.role !== 'admin' && data.expiresAt && data.expiresAt.toDate) {
+                        const now = new Date();
+                        const expires = data.expiresAt.toDate();
+                        if (now > expires) {
+                            await auth.signOut();
+                            showAlert('⛔ حسابك منتهي الصلاحية. تواصل مع المدير.', 'err');
+                            return;
+                        }
+                    }
+                }
+                // Redirect to exe
+                window.location.href = "https://zadelrahmanzad-boop.github.io/exe/";
+            }
+        });
+
+        function showAlert(text, type) {
+            const box = document.getElementById('alertBox');
+            box.textContent = text;
+            box.className = 'alert show alert-' + type;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('spinner');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                const user = cred.user;
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+
+                if (!userDoc.exists()) {
+                    await auth.signOut();
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    showAlert('❌ بيانات المستخدم غير موجودة في النظام', 'err');
+                    return;
+                }
+
+                const data = userDoc.data();
+                if (data.status === 'disabled') {
+                    await auth.signOut();
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    showAlert('⛔ حسابك معطل', 'err');
+                    return;
+                }
+
+                // Check expiration (skip for admin)
+                if (data.role !== 'admin' && data.expiresAt && data.expiresAt.toDate) {
+                    const now = new Date();
+                    const expires = data.expiresAt.toDate();
+                    const daysLeft = Math.ceil((expires - now) / (1000 * 60 * 60 * 24));
+
+                    if (now > expires) {
+                        await auth.signOut();
+                        btn.disabled = false;
+                        spinner.style.display = 'none';
+                        showAlert('⛔ انتهت صلاحية حسابك', 'err');
+                        return;
+                    }
+                    if (daysLeft <= 3) {
+                        showAlert('⚠️ صلاحية حسابك تنتهي خلال ' + daysLeft + ' أيام', 'warn');
+                    }
+                }
+
+                await updateDoc(doc(db, "users", user.uid), { lastLogin: serverTimestamp() });
+
+                // Redirect to exe
+                window.location.href = "https://zadelrahmanzad-boop.github.io/exe/";
+
+            } catch (err) {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                let msg = '❌ ' + (err.code === 'auth/user-not-found' ? 'البريد غير مسجل' :
+                    err.code === 'auth/wrong-password' ? 'كلمة المرور غير صحيحة' :
+                    err.code === 'auth/invalid-email' ? 'بريد غير صالح' :
+                    err.code === 'auth/too-many-requests' ? 'محاولات كثيرة' : err.message);
+                showAlert(msg, 'err');
+            }
+        });
+    </script>
+</body>
+</html>
