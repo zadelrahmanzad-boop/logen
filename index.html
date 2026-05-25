@@ -179,7 +179,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // If already logged in, redirect to exe
+        // If already logged in, redirect to 1.html
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -196,8 +196,8 @@
                         }
                     }
                 }
-                // Redirect to exe
-                window.location.href = "https://zadelrahmanzad-boop.github.io/exe/";
+                // ✅ Redirect to 1.html in same project
+                window.location.href = "./1.html";
             }
         });
 
@@ -259,8 +259,8 @@
 
                 await updateDoc(doc(db, "users", user.uid), { lastLogin: serverTimestamp() });
 
-                // Redirect to exe
-                window.location.href = "https://zadelrahmanzad-boop.github.io/exe/";
+                // ✅ Redirect to 1.html in same project
+                window.location.href = "./1.html";
 
             } catch (err) {
                 btn.disabled = false;
