@@ -3,275 +3,658 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - تسجيل الدخول</title>
+    <title>BARON POS - نظام الكاشير</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .login-box {
-            background: rgba(255,255,255,0.95);
-            padding: 45px 40px;
-            border-radius: 24px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-            width: 100%;
-            max-width: 440px;
-            animation: fadeIn 0.7s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .brand {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-        .brand h1 {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-        .brand p { color: #888; font-size: 15px; }
-        .input-wrap {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        .input-wrap label {
-            display: block;
-            margin-bottom: 8px;
-            color: #444;
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .input-wrap input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e8e8e8;
-            border-radius: 14px;
-            font-size: 16px;
-            font-family: 'Cairo', sans-serif;
-            transition: all 0.3s;
-            background: #fafafa;
-        }
-        .input-wrap input:focus {
-            outline: none;
-            border-color: #e94560;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(233,69,96,0.1);
-        }
-        .login-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Cairo', sans-serif;
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: 0.5px;
-        }
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(233,69,96,0.35);
-        }
-        .login-btn:active { transform: translateY(0); }
-        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .alert {
-            padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            font-size: 14px;
-            display: none;
-            text-align: center;
-            font-weight: 600;
-        }
-        .alert.show { display: block; }
-        .alert-err { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
-        .alert-warn { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
-        .alert-ok { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
-        .loader {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .hint {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #999;
-        }
-        .version {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 12px;
-            color: #bbb;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-box">
-        <div class="brand">
-            <h1>Welcome</h1>
-            <p>تسجيل الدخول للنظام</p>
-        </div>
-
-        <div id="alertBox" class="alert"></div>
-
-        <form id="loginForm">
-            <div class="input-wrap">
-                <label>📧 البريد الإلكتروني</label>
-                <input type="email" id="email" placeholder="example@email.com" required>
-            </div>
-            <div class="input-wrap">
-                <label>🔒 كلمة المرور</label>
-                <input type="password" id="password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="login-btn" id="loginBtn">
-                <span class="loader" id="spinner"></span>
-                تسجيل الدخول
-            </button>
-        </form>
-
-        <p class="hint">ℹ️ إنشاء الحسابات متاح للمدير فقط من لوحة التحكم</p>
-        <p class="version">Welcome</p>
+    <button class="mobile-menu-btn no-print" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <div class="sidebar-overlay no-print" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <!-- Maintenance Overlay -->
+    <div class="maintenance-overlay" id="maintenanceOverlay">
+        <i class="fas fa-tools"></i>
+        <h2>النظام في وضع الصيانة</h2>
+        <p>تم إغلاق جميع الجلسات من قبل الإدارة. يرجى المحاولة لاحقاً.</p>
+        <button onclick="forceLogout()">تسجيل الخروج</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2>BARON POS</h2>
+            <p>نظام كاشير المطاعم</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="navTo('pos')"><i class="fas fa-cash-register"></i><span>نقطة البيع</span></li>
+            <li class="nav-item" onclick="navTo('products')"><i class="fas fa-utensils"></i><span>المنتجات</span></li>
+            <li class="nav-item" onclick="navTo('invoices')"><i class="fas fa-file-invoice-dollar"></i><span>الفواتير</span></li>
+            <li class="nav-item" onclick="navTo('reports')"><i class="fas fa-chart-pie"></i><span>التقارير</span></li>
+            <li class="nav-item admin-only-nav" id="navUsers" onclick="navTo('users')"><i class="fas fa-users-cog"></i><span>المستخدمين</span></li>
+            <li class="nav-item" onclick="openPendingModal()"><i class="fas fa-pause-circle"></i><span>فواتير معلقة</span><span id="pendingBadge" style="background:var(--warning);color:white;padding:2px 8px;border-radius:10px;font-size:11px;margin-right:auto;display:none;">0</span></li>
+            <li class="nav-item" onclick="openPrinterModal()">
+        </ul>
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <div class="user-mini-avatar" id="uAvatar">👤</div>
+                <div class="user-mini-info">
+                    <div class="n" id="uName">...</div>
+                    <div class="r" id="uRole">...</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="doLogout()" style="margin-bottom:8px;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+            <button class="logout-btn" id="btnChangePass" onclick="openChangePassModal()" style="background:rgba(52,152,219,0.2);border-color:rgba(52,152,219,0.3);color:#3498db;display:none;"><i class="fas fa-key"></i> تغيير كلمة السر</button>
+        </div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDf_FZ5dDhJCYag9EpEblgylTrxber7oks",
-            authDomain: "cashier-52332.firebaseapp.com",
-            projectId: "cashier-52332",
-            storageBucket: "cashier-52332.firebasestorage.app",
-            messagingSenderId: "708122460779",
-            appId: "1:708122460779:web:5c0fb2f36488aa6ae3272e",
-            measurementId: "G-8BLM2L0LN5"
-        };
+    <div class="main">
+        <div class="topbar">
+            <h1 id="pageTitle">نقطة البيع</h1>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <div class="current-user-badge" id="currentUserBadge"><i class="fas fa-user-circle"></i><span id="currentUserName">جاري التحميل...</span></div>
+                <div class="date" id="topDate"></div>
+            </div>
+        </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        <div class="content">
+            <div class="maintenance-banner" id="maintenanceBanner">
+                <div style="display:flex;align-items:center;gap:15px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <h4>وضع الصيانة مفعل!</h4>
+                        <p>جميع المستخدمين سيتم إغلاق جلساتهم تلقائياً.</p>
+                    </div>
+                </div>
+                <button onclick="disableMaintenanceMode()">إيقاف وضع الصيانة</button>
+            </div>
 
-        // If already logged in, redirect to 1.html
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    // Check expiration (skip for admin)
-                    if (data.role !== 'admin' && data.expiresAt && data.expiresAt.toDate) {
-                        const now = new Date();
-                        const expires = data.expiresAt.toDate();
-                        if (now > expires) {
-                            await auth.signOut();
-                            showAlert('⛔ حسابك منتهي الصلاحية. تواصل مع المدير.', 'err');
-                            return;
-                        }
-                    }
-                }
-                // ✅ Redirect to 1.html in same project
-                window.location.href = "./1.html";
-            }
-        });
+            <div class="stats-row" id="statsBar" style="display:none !important;">
+                <div class="stat-box s1"><div class="stat-icon"><i class="fas fa-shopping-bag"></i></div><div class="stat-label">المبيعات اليوم</div><div class="stat-num" id="stSales">0</div></div>
+                <div class="stat-box s2"><div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div><div class="stat-label">الإيرادات</div><div class="stat-num" id="stRevenue">0 ج.م</div></div>
+                <div class="stat-box s3"><div class="stat-icon"><i class="fas fa-utensils"></i></div><div class="stat-label">المنتجات</div><div class="stat-num" id="stProducts">0</div></div>
+                <div class="stat-box s4"><div class="stat-icon"><i class="fas fa-receipt"></i></div><div class="stat-label">إجمالي الفواتير</div><div class="stat-num" id="stInvoices">0</div></div>
+            </div>
 
-        function showAlert(text, type) {
-            const box = document.getElementById('alertBox');
-            box.textContent = text;
-            box.className = 'alert show alert-' + type;
-        }
+            <!-- POS SECTION -->
+            <div class="section-view active" id="view-pos">
+                <div class="pos-grid">
+                    <div>
+                        <div class="card-head" style="margin-bottom:15px;background:white;border-radius:18px;padding:15px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                            <h3 style="margin:0;">قائمة المنتجات</h3>
+                            <div style="flex:1;min-width:200px;position:relative;">
+                                <i class="fas fa-search" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;"></i>
+                                <input type="text" id="productSearch" placeholder="ابحث عن منتج..." 
+                                    style="width:100%;padding:10px 15px 10px 40px;border:2px solid #e8e8e8;border-radius:12px;font-family:'Cairo',sans-serif;font-size:14px;"
+                                    oninput="filterProducts()" autocomplete="off">
+                            </div>
+                            <div class="btns"><button class="btn btn-gry" onclick="loadPosProducts()"><i class="fas fa-sync-alt"></i> تحديث</button></div>
+                        </div>
+                        <div class="cat-tabs" id="catTabs"></div>
+                        <div class="pos-products" id="posProducts"><div style="grid-column:1/-1;text-align:center;padding:40px;"><div class="spin"></div><p style="color:#aaa;margin-top:15px;">جاري التحميل...</p></div></div>
+                    </div>
 
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('loginBtn');
-            const spinner = document.getElementById('spinner');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+                    <!-- ENHANCED CART PANEL - MATCHING IMAGE 1 -->
+                    <div class="cart-panel">
+                        <h3>الفاتورة الحالية <span style="font-size:13px;color:#aaa;font-weight:400;" id="cartCount">(0)</span></h3>
+                        <div class="cart-items" id="cartItems">
+                            <div class="empty" style="padding:30px 0;"><i class="fas fa-cart-plus" style="font-size:40px;color:#eee;"></i><p>اضغط على منتج لإضافته</p></div>
+                        </div>
 
-            btn.disabled = true;
-            spinner.style.display = 'inline-block';
+                        <!-- Cart Summary Fields -->
+                        <div class="cart-summary" id="cartSummary">
+                            <div class="cart-summary-row">
+                                <label>إجمالي الفاتورة</label>
+                                <span class="value" id="summarySubTotal">0 ج.م</span>
+                            </div>
+                            <div class="cart-summary-row">
+                                <label>نسبة الخصم %</label>
+                                <input type="number" id="discountPercent" value="0" min="0" max="100" onchange="updateCartSummary()" oninput="updateCartSummary()">
+                            </div>
+                            <div class="cart-summary-row discount-row">
+                                <label>مبلغ الخصم</label>
+                                <span class="value" id="summaryDiscount">0 ج.م</span>
+                            </div>
+                            <div class="cart-summary-row delivery-row">
+                                <label>إضافة ديليفري</label>
+                                <input type="number" id="summaryDeliveryFee" value="0" min="0" onchange="updateCartSummary()" oninput="updateCartSummary()">
+                            </div>
+                            <div class="cart-summary-row paid-row">
+                                <label>المدفوع</label>
+                                <input type="number" id="summaryPaid" value="0" min="0" onchange="updateCartSummary()" oninput="updateCartSummary()">
+                            </div>
+                            <div class="cart-summary-row remaining-row">
+                                <label>المتبقي</label>
+                                <span class="value" id="summaryRemaining">0 ج.م</span>
+                            </div>
+                            <div class="cart-summary-row total">
+                                <label>الإجمالي النهائي</label>
+                                <span class="value" id="summaryFinalTotal">0 ج.م</span>
+                            </div>
+                        </div>
 
-            try {
-                const cred = await signInWithEmailAndPassword(auth, email, password);
-                const user = cred.user;
-                const userDoc = await getDoc(doc(db, "users", user.uid));
+                        <!-- Payment Method Toggle -->
+                        <div style="font-size:12px;font-weight:700;color:#444;margin-bottom:4px;">طريقة الدفع:</div>
+                        <div class="payment-toggle">
+                            <button class="pay-toggle-btn active" id="payCash" onclick="selectCartPayment('cash')"><i class="fas fa-money-bill-wave"></i> كاش</button>
+                            <button class="pay-toggle-btn" id="payVisa" onclick="selectCartPayment('visa')"><i class="fas fa-credit-card"></i> فيزا</button>
+                            <button class="pay-toggle-btn" id="payDelivery" onclick="selectCartPayment('delivery')"><i class="fas fa-motorcycle"></i> ديليفري</button>
+                        </div>
 
-                if (!userDoc.exists()) {
-                    await auth.signOut();
-                    btn.disabled = false;
-                    spinner.style.display = 'none';
-                    showAlert('❌ بيانات المستخدم غير موجودة في النظام', 'err');
-                    return;
-                }
+                        <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>إتمام البيع وطباعة</button>
+                        <button class="checkout-btn" id="holdBtn" onclick="holdInvoice()" disabled style="background:linear-gradient(135deg, var(--warning), #d68910);margin-top:8px;font-size:14px;"><i class="fas fa-pause-circle"></i> تعليق الفاتورة</button>
+                        <div class="clear-cart" onclick="clearCart()">إفراغ السلة</div>
+                    </div>
+                </div>
+            </div>
 
-                const data = userDoc.data();
-                if (data.status === 'disabled') {
-                    await auth.signOut();
-                    btn.disabled = false;
-                    spinner.style.display = 'none';
-                    showAlert('⛔ حسابك معطل', 'err');
-                    return;
-                }
+            <!-- PRODUCTS SECTION -->
+            <div class="section-view" id="view-products">
+                <div class="card">
+                    <div class="card-head">
+                        <h3>جدول المنتجات</h3>
+                        <div class="btns">
+                            <button class="btn btn-sec" onclick="loadProductsTable()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                            <button class="btn btn-main" id="btnAddProduct" onclick="openProductModal()" style="display:none;"><i class="fas fa-plus"></i> منتج جديد</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>الكود</th><th>اسم المنتج</th><th>السعر</th><th>الفئة</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+                        <tbody id="productsBody"><tr><td colspan="6" class="empty"><div class="spin"></div></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
 
-                // Check expiration (skip for admin)
-                if (data.role !== 'admin' && data.expiresAt && data.expiresAt.toDate) {
-                    const now = new Date();
-                    const expires = data.expiresAt.toDate();
-                    const daysLeft = Math.ceil((expires - now) / (1000 * 60 * 60 * 24));
+            <!-- INVOICES SECTION -->
+            <div class="section-view" id="view-invoices">
+                <div class="card">
+                    <div class="card-head" style="flex-wrap:wrap;gap:12px;">
+                        <h3>جدول الفواتير</h3>
+                        <div class="bulk-toolbar">
+                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:700;color:#444;">
+                                <input type="checkbox" id="selectAllInvTop" onchange="toggleSelectAllInvoices()" style="width:16px;height:16px;cursor:pointer;accent-color:var(--primary);"> تحديد الكل
+                            </label>
+                            <button class="btn btn-blu" onclick="printSelectedInvoices()"><i class="fas fa-print"></i> طباعة</button>
+                            <button class="btn btn-red" onclick="deleteSelectedInvoices()"><i class="fas fa-trash"></i> حذف</button>
+                            <button class="btn btn-drk" onclick="exportSelectedToPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                            <div style="width:1px;height:24px;background:#ddd;margin:0 4px;"></div>
+                            <button class="btn btn-sec" onclick="loadInvoicesTable()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                            <button class="btn btn-gry" onclick="printDayReport()"><i class="fas fa-print"></i> تقرير اليوم</button>
+                            <button class="btn btn-warn admin-only-nav" id="btnResetInv" onclick="resetInvoiceCounter()"><i class="fas fa-redo"></i> إعادة الترقيم</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th style="width:30px;text-align:center;"><input type="checkbox" id="selectAllInv" onchange="toggleSelectAllInvoices()" class="inv-select"></th><th>رقم الفاتورة</th><th>الوقت</th><th>العناصر</th><th>المبلغ</th><th>التوصيل</th><th>الخصم</th><th>الإجمالي</th><th>الدفع</th><th>الكاشير</th><th>إجراءات</th></tr></thead>
+                        <tbody id="invoicesBody"><tr><td colspan="10" class="empty"><div class="spin"></div></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
 
-                    if (now > expires) {
-                        await auth.signOut();
-                        btn.disabled = false;
-                        spinner.style.display = 'none';
-                        showAlert('⛔ انتهت صلاحية حسابك', 'err');
-                        return;
-                    }
-                    if (daysLeft <= 3) {
-                        showAlert('⚠️ صلاحية حسابك تنتهي خلال ' + daysLeft + ' أيام', 'warn');
-                    }
-                }
+            <!-- REPORTS SECTION -->
+            <div class="section-view" id="view-reports">
+                <div class="stats-row" style="margin-bottom:20px;">
+                    <div class="stat-box s1"><div class="stat-icon"><i class="fas fa-shopping-bag"></i></div><div class="stat-label">المبيعات اليوم</div><div class="stat-num" id="repStSales">0</div></div>
+                    <div class="stat-box s2"><div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div><div class="stat-label">الإيرادات</div><div class="stat-num" id="repStRevenue">0 ج.م</div></div>
+                    <div class="stat-box s3"><div class="stat-icon"><i class="fas fa-utensils"></i></div><div class="stat-label">المنتجات</div><div class="stat-num" id="repStProducts">0</div></div>
+                    <div class="stat-box s4"><div class="stat-icon"><i class="fas fa-receipt"></i></div><div class="stat-label">إجمالي الفواتير</div><div class="stat-num" id="repStInvoices">0</div></div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-box s1"><div class="stat-icon"><i class="fas fa-calendar-day"></i></div><div class="stat-label">مبيعات اليوم</div><div class="stat-num" id="repTodaySales">0 ج.م</div></div>
+                    <div class="stat-box s2"><div class="stat-icon"><i class="fas fa-calendar-week"></i></div><div class="stat-label">مبيعات الأسبوع</div><div class="stat-num" id="repWeekSales">0 ج.م</div></div>
+                    <div class="stat-box s3"><div class="stat-icon"><i class="fas fa-calendar-alt"></i></div><div class="stat-label">مبيعات الشهر</div><div class="stat-num" id="repMonthSales">0 ج.م</div></div>
+                    <div class="stat-box s4"><div class="stat-icon"><i class="fas fa-fire"></i></div><div class="stat-label">أكثر منتج مبيعاً</div><div class="stat-num" style="font-size:16px;" id="repTopProduct">-</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>تقرير المبيعات اليومية</h3>
+                        <div class="btns" style="flex-wrap:wrap;gap:8px;">
+                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <label style="font-size:13px;font-weight:700;color:#444;">من:</label>
+                                <input type="date" id="reportFrom" style="padding:6px 10px;border:2px solid #e8e8e8;border-radius:10px;font-family:'Cairo';font-size:13px;">
+                                <label style="font-size:13px;font-weight:700;color:#444;">إلى:</label>
+                                <input type="date" id="reportTo" style="padding:6px 10px;border:2px solid #e8e8e8;border-radius:10px;font-family:'Cairo';font-size:13px;">
+                                <button class="btn btn-sec" onclick="loadReports()"><i class="fas fa-filter"></i> عرض التقرير</button>
+                                <button class="btn btn-gry" onclick="printReports()"><i class="fas fa-print"></i> طباعة</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>التاريخ</th><th>عدد الفواتير</th><th>إجمالي المبيعات</th><th>متوسط الفاتورة</th></tr></thead>
+                        <tbody id="dailyReportBody"><tr><td colspan="4" class="empty"><i class="fas fa-chart-bar"></i><p>لا توجد بيانات</p></td></tr></tbody>
+                    </table>
+                </div>
+            </div>
 
-                await updateDoc(doc(db, "users", user.uid), { lastLogin: serverTimestamp() });
+            <!-- USERS SECTION -->
+            <div class="section-view" id="view-users">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchUserTab('users')" id="tabUsers">المستخدمين</button>
+                    <button class="tab-btn" onclick="switchUserTab('log')" id="tabLog">سجل الدخول / الخروج</button>
+                </div>
+                <div id="panel-users">
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>جدول المستخدمين</h3>
+                            <div class="btns">
+                                <button class="btn btn-sec" onclick="loadUsersTable()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                                <button class="btn btn-grn" id="btnAddUser" onclick="openUserModal()" style="display:none;"><i class="fas fa-plus"></i> مستخدم جديد</button>
+                                <button class="btn btn-drk" onclick="enableMaintenanceMode()" title="إغلاق جميع الجلسات"><i class="fas fa-tools"></i> إغلاق الكل</button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>#</th><th>الاسم</th><th>البريد</th><th>الدور</th><th>الحالة</th><th>الصلاحية</th><th>الصلاحيات</th><th>الساعات</th><th>الاتصال</th><th>تاريخ الإنشاء</th><th>إجراءات</th></tr></thead>
+                            <tbody id="usersBody"><tr><td colspan="11" class="empty"><div class="spin"></div></td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="panel-log" class="hidden">
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>سجل الدخول والخروج</h3>
+                            <div class="btns">
+                                <button class="btn btn-sec" onclick="loadLoginLog()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                                <button class="btn btn-gry" onclick="printLoginLog()"><i class="fas fa-print"></i> طباعة</button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>#</th><th>المستخدم</th><th>البريد</th><th>نوع العملية</th><th>وقت الدخول</th><th>وقت الخروج</th><th>مدة الجلسة</th><th>الجهاز / IP</th></tr></thead>
+                            <tbody id="loginLogBody"><tr><td colspan="8" class="empty"><div class="spin"></div></td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // ✅ Redirect to 1.html in same project
-                window.location.href = "./1.html";
+    <!-- Edit Invoice Modal -->
+    <div class="modal-bg" id="editInvoiceModal">
+        <div class="modal-box wide" style="max-width:700px;">
+            <button class="modal-close" onclick="closeEditInvoiceModal()">&times;</button>
+            <h2><i class="fas fa-edit" style="color:var(--warning);"></i> تعديل الفاتورة</h2>
+            <input type="hidden" id="editInvoiceId">
+            <div style="background:#fff3cd; padding:10px 15px; border-radius:10px; color:#856404; font-size:13px; margin-bottom:15px;">
+                <i class="fas fa-info-circle"></i> يمكنك إضافة منتجات أو تعديل الكميات أو حذف منتج من الفاتورة. سيتم تسجيل سبب التعديل تلقائياً.
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
+                <div class="form-row" style="margin:0;">
+                    <label>رقم الفاتورة</label>
+                    <input type="text" id="editInvoiceNum" readonly style="background:#f5f5f5;">
+                </div>
+                <div class="form-row" style="margin:0;">
+                    <label>تاريخ الفاتورة</label>
+                    <input type="text" id="editInvoiceDate" readonly style="background:#f5f5f5;">
+                </div>
+            </div>
+            <div class="card" style="margin-bottom:15px;">
+                <div class="card-head" style="padding:12px 20px;">
+                    <h3 style="font-size:15px;">عناصر الفاتورة</h3>
+                    <button class="btn btn-main" onclick="openAddProductToInvoice()" style="padding:6px 12px; font-size:12px;"><i class="fas fa-plus"></i> إضافة منتج</button>
+                </div>
+                <table>
+                    <thead><tr><th>المنتج</th><th>السعر</th><th>الكمية</th><th>الإجمالي</th><th>ملاحظة</th><th>إجراءات</th></tr></thead>
+                    <tbody id="editInvoiceItemsBody"></tbody>
+                </table>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
+                <div class="form-row" style="margin:0;">
+                    <label>نسبة الخصم %</label>
+                    <input type="number" id="editInvoiceDiscount" value="0" min="0" max="100" onchange="recalcEditInvoice()" oninput="recalcEditInvoice()">
+                </div>
+                <div class="form-row" style="margin:0;">
+                    <label>ديليفري (ج.م)</label>
+                    <input type="number" id="editInvoiceDelivery" value="0" min="0" onchange="recalcEditInvoice()" oninput="recalcEditInvoice()">
+                </div>
+            </div>
+            <div style="background:#f8f9fa; padding:12px 15px; border-radius:10px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:13px;">
+                    <span>المجموع:</span><strong id="editInvoiceSubTotal">0 ج.م</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:13px; color:var(--success);">
+                    <span>الخصم:</span><strong id="editInvoiceDiscountAmt">0 ج.م</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:800; color:var(--primary); border-top:1px dashed #ddd; padding-top:6px;">
+                    <span>الإجمالي النهائي:</span><strong id="editInvoiceTotal">0 ج.م</strong>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>سبب التعديل <span style="color:var(--danger);">*</span></label>
+                <select id="editInvoiceReason" style="width:100%; padding:12px 15px; border:2px solid #e8e8e8; border-radius:12px; font-size:15px; font-family:'Cairo',sans-serif;">
+                    <option value="">-- اختر السبب --</option>
+                    <option value="ارجاع">🔄 إرجاع منتج</option>
+                    <option value="اضافة">➕ إضافة منتج</option>
+                    <option value="تنزيل">⬇️ تنزيل منتج</option>
+                    <option value="تعديل كمية">📦 تعديل كمية</option>
+                    <option value="تعديل خصم">💰 تعديل خصم / ديليفري</option>
+                    <option value="اخرى">📝 أخرى</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>ملاحظات إضافية (اختياري)</label>
+                <input type="text" id="editInvoiceNote" placeholder="مثال: العميل طلب إرجاع البطاطس...">
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-gry" onclick="closeEditInvoiceModal()">إلغاء</button>
+                <button class="btn btn-main" onclick="saveInvoiceEdit()"><i class="fas fa-save"></i> حفظ التعديلات</button>
+            </div>
+        </div>
+    </div>
 
-            } catch (err) {
-                btn.disabled = false;
-                spinner.style.display = 'none';
-                let msg = '❌ ' + (err.code === 'auth/user-not-found' ? 'البريد غير مسجل' :
-                    err.code === 'auth/wrong-password' ? 'كلمة المرور غير صحيحة' :
-                    err.code === 'auth/invalid-email' ? 'بريد غير صالح' :
-                    err.code === 'auth/too-many-requests' ? 'محاولات كثيرة' : err.message);
-                showAlert(msg, 'err');
-            }
-        });
-    </script>
+    <!-- Add Product to Invoice Modal -->
+    <div class="modal-bg" id="addProdToInvModal">
+        <div class="modal-box" style="max-width:500px;">
+            <button class="modal-close" onclick="closeAddProdToInvModal()">&times;</button>
+            <h2>إضافة منتج للفاتورة</h2>
+            <div style="position:relative; margin-bottom:15px;">
+                <i class="fas fa-search" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;"></i>
+                <input type="text" id="addProdSearch" placeholder="ابحث عن منتج..." 
+                    style="width:100%;padding:10px 15px 10px 40px;border:2px solid #e8e8e8;border-radius:12px;font-family:'Cairo',sans-serif;font-size:14px;"
+                    oninput="filterAddProdSearch()">
+            </div>
+            <div id="addProdResults" style="max-height:300px; overflow-y:auto;">
+                <div class="empty" style="padding:20px;"><i class="fas fa-search" style="font-size:30px;color:#eee;"></i><p>ابحث عن منتج لإضافته</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal-bg" id="productModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            <h2 id="prodModalTitle">إضافة منتج جديد</h2>
+            <div class="form-row">
+                <label>كود المنتج</label>
+                <div class="input-group">
+                    <input type="text" id="prodCode" placeholder="#1001" readonly style="background:#f5f5f5;">
+                    <button onclick="generateProductCode()"><i class="fas fa-magic"></i> توليد</button>
+                </div>
+            </div>
+            <div class="form-row"><label>اسم المنتج</label><input type="text" id="prodName" placeholder="تشكن بروست"></div>
+            <div class="form-row"><label>السعر (ج.م)</label><input type="number" id="prodPrice" placeholder="165"></div>
+            <div class="form-row">
+                <label>الفئة</label>
+                <select id="prodCat" onchange="onProdCatChange()">
+                    <option value="تشكن">تشكن</option>
+                    <option value="برجر">برجر</option>
+                    <option value="سايدز">سايدز</option>
+                    <option value="مشروبات">مشروبات</option>
+                    <option value="أخرى">أخرى</option>
+                    <option value="__new__">+ فئة جديدة</option>
+                </select>
+                <div id="newCatRow" class="cat-input-row hidden" style="margin-top:8px;">
+                    <input type="text" id="newCatInput" placeholder="اسم الفئة الجديدة">
+                    <button onclick="addNewCategory()">إضافة</button>
+                </div>
+            </div>
+            <div class="modal-foot"><button class="btn btn-gry" onclick="closeProductModal()">إلغاء</button><button class="btn btn-main" onclick="saveProduct()">حفظ</button></div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal-bg" id="editProductModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeEditProductModal()">&times;</button>
+            <h2 id="editProdModalTitle">تعديل المنتج</h2>
+            <input type="hidden" id="editProdId">
+            <div class="form-row">
+                <label>كود المنتج</label>
+                <input type="text" id="editProdCode" placeholder="#1001" readonly style="background:#f5f5f5;">
+            </div>
+            <div class="form-row"><label>اسم المنتج</label><input type="text" id="editProdName" placeholder="تشكن بروست"></div>
+            <div class="form-row"><label>السعر (ج.م)</label><input type="number" id="editProdPrice" placeholder="165"></div>
+            <div class="form-row">
+                <label>الفئة</label>
+                <select id="editProdCat" onchange="onEditProdCatChange()">
+                    <option value="تشكن">تشكن</option>
+                    <option value="برجر">برجر</option>
+                    <option value="سايدز">سايدز</option>
+                    <option value="مشروبات">مشروبات</option>
+                    <option value="أخرى">أخرى</option>
+                    <option value="__new__">+ فئة جديدة</option>
+                </select>
+                <div id="editNewCatRow" class="cat-input-row hidden" style="margin-top:8px;">
+                    <input type="text" id="editNewCatInput" placeholder="اسم الفئة الجديدة">
+                    <button onclick="addNewEditCategory()">إضافة</button>
+                </div>
+            </div>
+            <div class="modal-foot"><button class="btn btn-gry" onclick="closeEditProductModal()">إلغاء</button><button class="btn btn-main" onclick="saveProductEdit()">حفظ التعديلات</button></div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div class="modal-bg" id="invoiceModal">
+        <div class="modal-box invoice-modal-box">
+            <button class="modal-close" onclick="closeInvoiceModal()">&times;</button>
+            <div id="invoiceDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal-bg" id="changePassModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeChangePassModal()">&times;</button>
+            <h2><i class="fas fa-key"></i> تغيير كلمة السر</h2>
+            <div class="form-row">
+                <label>كلمة السر الحالية</label>
+                <input type="password" id="currentPass" placeholder="********">
+            </div>
+            <div class="form-row">
+                <label>كلمة السر الجديدة</label>
+                <input type="password" id="newPass" placeholder="6 أحرف على الأقل">
+            </div>
+            <div class="form-row">
+                <label>تأكيد كلمة السر الجديدة</label>
+                <input type="password" id="confirmPass" placeholder="********">
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-gry" onclick="closeChangePassModal()">إلغاء</button>
+                <button class="btn btn-main" onclick="changePassword()">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal-bg" id="userModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeUserModal()">&times;</button>
+            <h2>إضافة مستخدم جديد</h2>
+            <div class="form-row"><label>الاسم الكامل</label><input type="text" id="userName" placeholder="محمد أحمد"></div>
+            <div class="form-row"><label>البريد الإلكتروني</label><input type="email" id="userEmail" placeholder="example@email.com"></div>
+            <div class="form-row"><label>كلمة المرور</label><input type="password" id="userPass" placeholder="6 أحرف على الأقل"></div>
+            <div class="form-row"><label>الدور</label><select id="userRole" onchange="toggleUserDays()"><option value="cashier">كاشير</option><option value="manager">مشرف</option><option value="admin">مدير</option></select></div>
+            <div class="form-row" id="userDaysRow"><label>مدة التفعيل (بالأيام)</label><input type="number" id="userDays" value="30" min="1"></div>
+            <div class="form-row hidden" id="adminNoteRow"><div style="background:#e8f5e9; padding:12px 15px; border-radius:10px; color:#2e7d32; font-size:13px;">حساب المدير <strong>صلاحيته دائمة</strong> بدون فترة انتهاء.</div></div>
+            <div class="modal-foot"><button class="btn btn-gry" onclick="closeUserModal()">إلغاء</button><button class="btn btn-main" onclick="saveUser()">إنشاء</button></div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal-bg" id="editUserModal">
+        <div class="modal-box wide">
+            <button class="modal-close" onclick="closeEditUserModal()">&times;</button>
+            <h2>تعديل المستخدم</h2>
+            <input type="hidden" id="editUserId">
+            <div class="form-row"><label>الاسم الكامل</label><input type="text" id="editUserName"></div>
+            <div class="form-row"><label>البريد الإلكتروني</label><input type="email" id="editUserEmail" disabled style="background:#f5f5f5;"></div>
+            <div class="form-row"><label>الدور</label><select id="editUserRole" onchange="toggleEditUserDays()"><option value="cashier">كاشير</option><option value="manager">مشرف</option><option value="admin">مدير</option></select></div>
+            <div class="form-row" id="editUserDaysRow"><label>مدة التفعيل المتبقية (بالأيام)</label><input type="number" id="editUserDays" min="1"></div>
+            <div class="form-row hidden" id="editAdminNoteRow"><div style="background:#e8f5e9; padding:12px 15px; border-radius:10px; color:#2e7d32; font-size:13px;">المدير <strong>صلاحيته دائمة</strong> بدون فترة انتهاء.</div></div>
+            <div class="form-row">
+                <label>حالة الحساب</label>
+                <select id="editUserStatus"><option value="active">نشط</option><option value="disabled">معطل</option></select>
+            </div>
+            <div class="form-row">
+                <label>الصلاحيات <span style="font-size:12px;color:#888;font-weight:400;">(حدد الأقسام المتاحة للمستخدم)</span></label>
+                <div id="editUserPerms" style="display:flex;flex-direction:column;gap:20px;">
+                    <!-- POS Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-cash-register"></i> نقطة البيع</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_pos" value="pos"><label for="perm_pos">الوصول لـ POS</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_pos_sell" value="pos_sell"><label for="perm_pos_sell">البيع / إتمام الفاتورة</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)" style="grid-column:1/-1;background:#fff3cd;border-color:var(--warning);"><input type="checkbox" id="perm_monitor_only" value="monitor_only"><label for="perm_monitor_only"><i class="fas fa-eye" style="color:var(--warning);"></i> متابعة فقط (بدون بيع)</label></div>
+                        </div>
+                    </div>
+                    <!-- Products Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-utensils"></i> المنتجات</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_products" value="products"><label for="perm_products">عرض المنتجات</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_products_add" value="products_add"><label for="perm_products_add">إضافة منتج</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_products_edit" value="products_edit"><label for="perm_products_edit">تعديل منتج</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_products_delete" value="products_delete"><label for="perm_products_delete">حذف منتج</label></div>
+                        </div>
+                    </div>
+                    <!-- Invoices Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-file-invoice-dollar"></i> الفواتير</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_invoices" value="invoices"><label for="perm_invoices">عرض الفواتير</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_invoices_view" value="invoices_view"><label for="perm_invoices_view">عرض تفاصيل الفاتورة</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_invoices_print" value="invoices_print"><label for="perm_invoices_print"><i class="fas fa-print" style="color:var(--info);"></i> طباعة الفواتير</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_invoices_delete" value="invoices_delete"><label for="perm_invoices_delete"><i class="fas fa-trash" style="color:var(--danger);"></i> حذف الفواتير</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_invoices_edit" value="invoices_edit"><label for="perm_invoices_edit"><i class="fas fa-edit" style="color:var(--warning);"></i> تعديل الفواتير</label></div>
+                        </div>
+                    </div>
+                    <!-- Reports Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-chart-pie"></i> التقارير</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_reports" value="reports"><label for="perm_reports">عرض التقارير</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_reports_view" value="reports_view"><label for="perm_reports_view">عرض بيانات التقارير</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_reports_print" value="reports_print"><label for="perm_reports_print"><i class="fas fa-file-alt" style="color:var(--success);"></i> طباعة التقارير</label></div>
+                        </div>
+                    </div>
+                    <!-- Users Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-users-cog"></i> المستخدمين</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_users" value="users"><label for="perm_users">عرض المستخدمين</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_users_view" value="users_view"><label for="perm_users_view">عرض جدول المستخدمين</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_users_add" value="users_add"><label for="perm_users_add">إضافة مستخدم</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_users_edit" value="users_edit"><label for="perm_users_edit">تعديل مستخدم</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_users_delete" value="users_delete"><label for="perm_users_delete">حذف مستخدم</label></div>
+                        </div>
+                    </div>
+                    <!-- Settings Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-cog"></i> الإعدادات</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_settings" value="settings"><label for="perm_settings">عرض الإعدادات</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_settings_view" value="settings_view"><label for="perm_settings_view">عرض الإعدادات</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_settings_edit" value="settings_edit"><label for="perm_settings_edit">تعديل الإعدادات</label></div>
+                        </div>
+                    </div>
+                    <!-- Pending Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-pause-circle"></i> الفواتير المعلقة</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_pending" value="pending"><label for="perm_pending">عرض الفواتير المعلقة</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_pending_view" value="pending_view"><label for="perm_pending_view">عرض المعلقة</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_pending_resume" value="pending_resume"><label for="perm_pending_resume">استعادة معلقة</label></div>
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_pending_delete" value="pending_delete"><label for="perm_pending_delete">حذف معلقة</label></div>
+                        </div>
+                    </div>
+                    <!-- Security Section -->
+                    <div style="border:2px solid #e8e8e8;border-radius:12px;padding:15px;background:#fafbfc;">
+                        <div style="font-weight:800;font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;"><i class="fas fa-shield-alt"></i> الأمان</div>
+                        <div class="perm-grid">
+                            <div class="perm-item" onclick="togglePerm(this)"><input type="checkbox" id="perm_change_password" value="change_password"><label for="perm_change_password">تغيير كلمة السر</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-foot"><button class="btn btn-gry" onclick="closeEditUserModal()">إلغاء</button><button class="btn btn-main" onclick="updateUser()">حفظ التعديلات</button></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qz-tray@2.2.3/qz-tray.min.js"></script>
+    <script type="module" src="app.js"></script>
+
+    <!-- Quick Note Modal -->
+    <div class="modal-bg" id="noteModal">
+        <div class="modal-box" style="max-width:380px;">
+            <button class="modal-close" onclick="closeNoteModal()">&times;</button>
+            <h2><i class="fas fa-sticky-note" style="color:var(--warning);"></i> ملاحظة المنتج</h2>
+            <div style="margin-bottom:15px;">
+                <label style="display:block;margin-bottom:8px;font-weight:700;font-size:14px;">اختر ملاحظة سريعة:</label>
+                <div id="quickNotesList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('بدون خس')">بدون خس</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('بدون طماطم')">بدون طماطم</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('بدون بصل')">بدون بصل</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('Spicy')">Spicy 🔥</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('Extra Sauce')">Extra Sauce</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('Well Done')">Well Done</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('Medium')">Medium</button>
+                    <button class="btn btn-gry" style="font-size:12px;padding:6px 10px;" onclick="selectQuickNote('Extra Cheese')">Extra Cheese 🧀</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>أو اكتب ملاحظة مخصصة:</label>
+                <textarea id="customNoteInput" rows="3" placeholder="اكتب هنا..." 
+                    style="width:100%;padding:10px;border:2px solid #e8e8e8;border-radius:10px;font-family:'Cairo';font-size:14px;resize:vertical;"
+                    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();saveNote();}"></textarea>
+                <div style="font-size:11px;color:#888;margin-top:4px;">اضغط Enter للسطر الجديد</div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-gry" onclick="closeNoteModal()">إلغاء</button>
+                <button class="btn btn-red" onclick="clearNote()" style="margin-right:auto;"><i class="fas fa-trash"></i> مسح</button>
+                <button class="btn btn-main" onclick="saveNote()">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Printer Settings Modal -->
+    <div class="modal-bg" id="printerModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closePrinterModal()">&times;</button>
+            <h2><i class="fas fa-print"></i> إعدادات الطابعة</h2>
+            <div class="form-row">
+                <div style="background:#e8f4fd; padding:12px 15px; border-radius:10px; color:#0c5460; font-size:13px; margin-bottom:15px;">
+                    <i class="fas fa-info-circle"></i> لازم يكون برنامج <strong>QZ Tray</strong> شغال على الجهاز. لو مش مثبّته، <a href="https://qz.io" target="_blank" style="color:var(--primary);">حمله من هنا</a>.
+                </div>
+            </div>
+            <div class="form-row">
+                <label>حالة الاتصال</label>
+                <div id="qzStatus" style="font-weight:700; color:#888;">غير متصل</div>
+            </div>
+            <div class="form-row">
+                <button class="btn btn-main" onclick="connectQZ()" id="btnConnectQZ"><i class="fas fa-plug"></i> توصيل QZ Tray</button>
+            </div>
+            <div class="form-row">
+                <label>اختر الطابعة</label>
+                <select id="printerSelect" disabled>
+                    <option value="">-- اضغط "توصيل" الأول --</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>عدد النسخ الافتراضي</label>
+                <input type="number" id="printerCopies" value="2" min="1" max="5" style="width:80px;">
+            </div>
+            <div class="form-row">
+                <label>عرض الورق (مم)</label>
+                <select id="paperWidth">
+                    <option value="58">58 مم (حرارية صغيرة)</option>
+                    <option value="80">80 مم (حرارية كبيرة)</option>
+                    <option value="A4">A4 (عادية)</option>
+                </select>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-gry" onclick="closePrinterModal()">إلغاء</button>
+                <button class="btn btn-main" onclick="savePrinterSettings()">حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Pending Invoices Modal -->
+    <div class="modal-bg" id="pendingModal">
+        <div class="modal-box wide">
+            <button class="modal-close" onclick="closePendingModal()">&times;</button>
+            <h2><i class="fas fa-pause-circle" style="color:var(--warning);"></i> الفواتير المعلقة</h2>
+            <table>
+                <thead><tr><th>#</th><th>الوقت</th><th>العناصر</th><th>المجموع</th><th>الكاشير</th><th>إجراءات</th></tr></thead>
+                <tbody id="pendingBody"><tr><td colspan="6" class="empty"><div class="spin"></div></td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>
